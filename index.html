@@ -1,164 +1,703 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Cybersecurity Portfolio - GREY ABOU JAOUDE</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>Grey Abou Jaoude — Cybersecurity Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0c10;
+      --surface: #10141c;
+      --surface2: #151b27;
+      --border: #1e2a3a;
+      --accent: #00d4ff;
+      --accent2: #7b5ea7;
+      --accent3: #00ff9d;
+      --text: #c8d8e8;
+      --text-muted: #5a7080;
+      --text-bright: #eef4f8;
+      --tag-bg: #0d1e2e;
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 2px; }
+
+    /* ── LAYOUT ── */
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      padding: 80px 0 60px;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    header::after {
+      content: 'SEC';
+      position: absolute;
+      right: -20px; top: -10px;
+      font-family: var(--font-display);
+      font-size: clamp(100px, 18vw, 240px);
+      font-weight: 800;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(0,212,255,0.06);
+      pointer-events: none;
+      letter-spacing: -10px;
+      line-height: 1;
+    }
+
+    .header-tag {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .header-tag::before {
+      content: '';
+      display: block; width: 30px; height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 800;
+      color: var(--text-bright);
+      line-height: 1.05;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin-bottom: 36px;
+    }
+
+    nav {
+      display: flex; flex-wrap: wrap; gap: 4px;
+    }
+
+    nav a {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+    nav a:hover { color: var(--accent); border-color: var(--accent); background: rgba(0,212,255,0.04); }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 72px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-child { border-bottom: none; }
+
+    .section-label {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 40px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: linear-gradient(to right, var(--border), transparent);
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 4vw, 42px);
+      font-weight: 700;
+      color: var(--text-bright);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    /* ── SUMMARY ── */
+    .summary-text {
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--text);
+      max-width: 780px;
+      border-left: 2px solid var(--accent2);
+      padding-left: 24px;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .skill-block {
+      background: var(--surface);
+      padding: 28px;
+      transition: background 0.2s;
+    }
+    .skill-block:hover { background: var(--surface2); }
+
+    .skill-block h3 {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skill-block ul { list-style: none; }
+    .skill-block ul li {
+      font-size: 13px;
+      color: var(--text);
+      padding: 5px 0;
+      padding-left: 14px;
+      position: relative;
+    }
+    .skill-block ul li::before {
+      content: '›';
+      position: absolute; left: 0;
+      color: var(--accent);
+    }
+
+    /* ── EXPERIENCE ── */
+    .exp-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 32px;
+      margin-bottom: 2px;
+      transition: border-color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .exp-block::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent2);
+    }
+    .exp-block:hover { border-color: var(--accent2); }
+
+    .exp-header {
+      display: flex; flex-wrap: wrap;
+      justify-content: space-between; align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .exp-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-bright);
+    }
+    .exp-org {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .exp-date {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: var(--tag-bg);
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .exp-block ul { list-style: none; }
+    .exp-block ul li {
+      font-size: 13px;
+      color: var(--text);
+      padding: 5px 0 5px 18px;
+      position: relative;
+      border-bottom: 1px solid rgba(30,42,58,0.5);
+    }
+    .exp-block ul li:last-child { border-bottom: none; }
+    .exp-block ul li::before {
+      content: '//';
+      position: absolute; left: 0;
+      color: var(--accent2);
+      font-size: 11px;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .project-card {
+      background: var(--surface);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.2s;
+    }
+    .project-card:hover { background: var(--surface2); }
+    .project-card:hover .proj-num { color: var(--accent); }
+
+    .proj-num {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 800;
+      color: rgba(30,42,58,0.8);
+      line-height: 1;
+      margin-bottom: 16px;
+      transition: color 0.3s;
+    }
+
+    .project-card h3 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .project-card p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .tech-tags {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .tech-tag {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      background: rgba(0,255,157,0.05);
+      border: 1px solid rgba(0,255,157,0.2);
+      padding: 3px 8px;
+    }
+
+    /* ── EDUCATION ── */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .edu-card {
+      background: var(--surface);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .edu-card::after {
+      content: '▲';
+      position: absolute;
+      bottom: -10px; right: 20px;
+      font-size: 60px;
+      color: rgba(123,94,167,0.07);
+      pointer-events: none;
+    }
+
+    .edu-degree {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .edu-school {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .edu-date {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ── CONTACT ── */
+    .contact-row {
+      display: flex; flex-wrap: wrap; gap: 12px;
+    }
+    .contact-link {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px;
+      color: var(--text);
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 14px 22px;
+      transition: all 0.2s;
+    }
+    .contact-link:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(0,212,255,0.04);
+    }
+    .contact-link span {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* ── INTERESTS ── */
+    .interests-row {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 24px;
+    }
+    .interest-pill {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      border: 1px solid rgba(123,94,167,0.3);
+      background: rgba(123,94,167,0.05);
+      padding: 6px 14px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+    }
+    footer p {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    header .wrap > * { animation: fadeUp 0.6s ease both; }
+    header .wrap > *:nth-child(1) { animation-delay: 0.1s; }
+    header .wrap > *:nth-child(2) { animation-delay: 0.2s; }
+    header .wrap > *:nth-child(3) { animation-delay: 0.3s; }
+    header .wrap > *:nth-child(4) { animation-delay: 0.4s; }
+
+    @media (max-width: 600px) {
+      .wrap { padding: 0 20px; }
+      section { padding: 48px 0; }
+      .exp-block { padding: 24px 20px; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>[GREY ABOU JAOUDE]</h1>
-            <p>Cybersecurity Graduate Student & Project Coordinator</p>
-            <nav>
-                <a href="#summary">Summary</a>
-                <a href="#skills">Skills</a>
-                <a href="#projects">Projects</a>
-                <a href="#education">Education</a>
-                <a href="#contact">Contact</a>
-            </nav>
+
+  <header>
+    <div class="wrap">
+      <div class="header-tag">Cybersecurity Portfolio</div>
+      <h1>Grey Abou<br>Jaoude</h1>
+      <p class="subtitle">MS Cybersecurity, NYU &nbsp;·&nbsp; Former Service Project Manager, Otis &nbsp;·&nbsp; New York, NY</p>
+      <nav>
+        <a href="#summary">Summary</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- SUMMARY -->
+    <section id="summary">
+      <div class="section-label">01 — Summary</div>
+      <h2>Professional<br>Summary</h2>
+      <br>
+      <p class="summary-text">
+        Cybersecurity graduate student at New York University with a strong foundation in network security, cryptography, digital forensics, and system defense. Three years of experience as a Service Project Manager at Otis, coordinating field operations, managing timelines, and delivering safety-critical service projects. Skilled in cross-functional communication, workflow organization, risk mitigation, and structured project execution. Seeking roles in cybersecurity — including security analysis, GRC, SOC operations, IAM, digital forensics, and government cybersecurity.
+      </p>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="section-label">02 — Skills</div>
+      <h2>Core Skills</h2>
+      <br>
+      <div class="skills-grid">
+        <div class="skill-block">
+          <h3>Cybersecurity</h3>
+          <ul>
+            <li>Network security fundamentals</li>
+            <li>Packet sniffing & spoofing (academic labs)</li>
+            <li>DNS cache poisoning concepts</li>
+            <li>iptables firewall configuration</li>
+            <li>TCP attack simulation & analysis</li>
+            <li>Applied cryptography</li>
+            <li>Digital forensics (Autopsy, FTK Imager)</li>
+          </ul>
         </div>
-    </header>
-
-    <main class="container">
-        <section id="summary">
-            <h2>Professional Summary</h2>
-            <p>
-                Graduate-level cybersecurity student at New York University (projected graduation December 2026)
-                with a bachelor’s degree in Computer Science Cybersecurity. Experienced in coordinating
-                cross-functional academic teams and leading structured technical projects in network security and
-                computer networking. Hands-on academic experience with network security labs involving packet
-                sniffing, spoofing, cache poisoning, firewall and iptables configuration, and TCP-level attack
-                simulations. Strong foundation in applied cryptography and a keen interest in web and domain
-                infrastructure. Seeking roles that value analytical thinking, security awareness, and organized
-                execution rather than deep low-level engineering.
-            </p>
-        </section>
-
-        <section id="skills">
-            <h2>Skills</h2>
-            <div class="grid">
-                <div>
-                    <h3>Project & Team Skills</h3>
-                    <ul>
-                        <li>Cross-functional coordination in academic project settings</li>
-                        <li>Requirements clarification and task breakdown</li>
-                        <li>Documentation of processes, findings, and outcomes</li>
-                        <li>Structuring workflows and tracking progress</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Cybersecurity & Technical Skills</h3>
-                    <ul>
-                        <li>Network security fundamentals</li>
-                        <li>Packet sniffing and spoofing (lab environments)</li>
-                        <li>DNS cache poisoning concepts and simulation</li>
-                        <li>Firewall configuration and traffic filtering with iptables</li>
-                        <li>TCP attack simulations and analysis</li>
-                        <li>Applied cryptography concepts</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Technical Interests</h3>
-                    <ul>
-                        <li>Website and domain infrastructure</li>
-                        <li>DNS behavior and security</li>
-                        <li>General web security considerations</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects">
-            <h2>Academic Projects</h2>
-
-            <article class="project">
-                <h3>Network Sniffing and Spoofing Simulation (Academic Lab)</h3>
-                <p><strong>Role:</strong> Lead Student Researcher</p>
-                <p><strong>Objective:</strong> Analyze packet flows in a controlled lab network and evaluate common sniffing and spoofing attack vectors.</p>
-                <p><strong>Responsibilities:</strong></p>
-                <ul>
-                    <li>Captured and analyzed network traffic using packet inspection tools in an isolated lab environment.</li>
-                    <li>Performed controlled sniffing and spoofing exercises to understand how sensitive data can be exposed in transit.</li>
-                    <li>Documented attack behavior, observations, and suggested mitigation strategies.</li>
-                </ul>
-                <p><strong>Tools & Technologies:</strong> Wireshark, Linux networking tools, virtual lab environment</p>
-            </article>
-
-            <article class="project">
-                <h3>DNS Cache Poisoning Analysis</h3>
-                <p><strong>Role:</strong> Project Coordinator</p>
-                <p><strong>Objective:</strong> Study the mechanics of DNS cache poisoning and identify weaknesses in name-resolution processes.</p>
-                <ul>
-                    <li>Simulated cache poisoning attacks in a sandboxed academic environment.</li>
-                    <li>Analyzed how DNS queries and responses can be manipulated under certain conditions.</li>
-                    <li>Produced a structured report explaining risk factors, attacker requirements, and defensive strategies.</li>
-                </ul>
-                <p><strong>Tools & Technologies:</strong> DNS utilities, local DNS resolver in lab environment</p>
-            </article>
-
-            <article class="project">
-                <h3>Firewall & iptables Configuration Lab</h3>
-                <p><strong>Role:</strong> Technical Implementer</p>
-                <p><strong>Objective:</strong> Design and evaluate firewall rules to control traffic and harden system exposure.</p>
-                <ul>
-                    <li>Created iptables rule sets to filter inbound and outbound network traffic.</li>
-                    <li>Tested rule behavior against simulated scans and attack attempts.</li>
-                    <li>Documented rule configurations and their impact on allowed and blocked traffic.</li>
-                </ul>
-                <p><strong>Tools & Technologies:</strong> Linux iptables, virtual machines, lab network simulations</p>
-            </article>
-
-            <article class="project">
-                <h3>TCP Attack Surface Study</h3>
-                <p><strong>Role:</strong> Research Contributor</p>
-                <p><strong>Objective:</strong> Understand vulnerabilities at the TCP layer and how misconfigurations and weak controls can be exploited.</p>
-                <ul>
-                    <li>Conducted controlled TCP-focused attack simulations in an academic environment.</li>
-                    <li>Observed how different configurations affected system resilience and availability.</li>
-                    <li>Collaborated on a written analysis describing risks and mitigation strategies.</li>
-                </ul>
-                <p><strong>Tools & Technologies:</strong> Linux networking utilities, traffic generation tools, lab network</p>
-            </article>
-
-            <article class="project">
-                <h3>Applied Cryptography Coursework</h3>
-                <p><strong>Role:</strong> Student Researcher</p>
-                <p><strong>Objective:</strong> Build a foundational understanding of cryptographic primitives and their role in modern security systems.</p>
-                <ul>
-                    <li>Studied and implemented classical and modern ciphers in an academic context.</li>
-                    <li>Analyzed hashing functions, key generation strategies, and encryption schemes.</li>
-                    <li>Evaluated security implications of weak algorithms and incorrect implementation.</li>
-                </ul>
-            </article>
-        </section>
-
-        <section id="education">
-            <h2>Education</h2>
-            <ul>
-                <li>
-                    <strong>Master of Science, Cybersecurity</strong> &mdash; New York University<br>
-                    <em>Projected Graduation: December 2026</em>
-                </li>
-                <li>
-                    <strong>Bachelor of Science, Computer Science Cybersecurity</strong><br>
-                    Liberty University, Virginia
-                </li>
-            </ul>
-        </section>
-
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Email: <a href="mailto:ga2698@nyu.edu">ga2698@nyu.edu</a></p>
-            <p>LinkedIn: <a href="https://linkedin.com/in/GreyAj" target="_blank" rel="noopener">linkedin.com/in/greyAj</a></p>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; [2025] [Grey Abou Jaoude]. All rights reserved.</p>
+        <div class="skill-block">
+          <h3>Project & Operations</h3>
+          <ul>
+            <li>Cross-functional team coordination</li>
+            <li>Scheduling & progress tracking</li>
+            <li>Stakeholder communication</li>
+            <li>Risk identification & mitigation</li>
+            <li>Documentation & workflow oversight</li>
+            <li>Regulatory compliance (safety standards)</li>
+          </ul>
         </div>
-    </footer>
+        <div class="skill-block">
+          <h3>Tools & Technologies</h3>
+          <ul>
+            <li>Python, SQL, HTML</li>
+            <li>Wireshark</li>
+            <li>Linux networking utilities & iptables</li>
+            <li>DNS tools</li>
+            <li>Virtualized lab environments</li>
+            <li>Autopsy & FTK Imager</li>
+          </ul>
+        </div>
+        <div class="skill-block">
+          <h3>Focus Areas</h3>
+          <ul>
+            <li>Security analysis</li>
+            <li>GRC (Governance, Risk & Compliance)</li>
+            <li>SOC operations</li>
+            <li>Identity & Access Management (IAM)</li>
+            <li>Digital forensics</li>
+            <li>Government cybersecurity</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFESSIONAL EXPERIENCE -->
+    <section id="experience">
+      <div class="section-label">03 — Experience</div>
+      <h2>Professional<br>Experience</h2>
+      <br>
+      <div class="exp-block">
+        <div class="exp-header">
+          <div>
+            <div class="exp-title">Service Project Manager</div>
+            <div class="exp-org">Otis Elevator Company</div>
+          </div>
+          <div class="exp-date">Dec 2021 – Nov 2024 · New York, NY</div>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">
+          Managed service and maintenance projects for elevator and escalator systems, ensuring safety, regulatory compliance, customer satisfaction, and timely project completion.
+        </p>
+        <ul>
+          <li>Coordinated technicians, inspectors, vendors, and customers to support safe and efficient service delivery.</li>
+          <li>Oversaw scheduling, progress tracking, and documentation for multiple simultaneous service jobs.</li>
+          <li>Identified operational risks and resolved technical or logistical issues to prevent delays.</li>
+          <li>Ensured compliance with safety standards and regulatory requirements.</li>
+          <li>Improved workflow organization by standardizing reporting and task-tracking procedures.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="section-label">04 — Academic Projects</div>
+      <h2>Cybersecurity<br>Projects</h2>
+      <br>
+      <div class="projects-grid">
+
+        <div class="project-card">
+          <div class="proj-num">01</div>
+          <h3>Digital Forensics & Evidence Analysis</h3>
+          <p>Used Autopsy & FTK Imager to preserve digital evidence while maintaining data integrity. Performed file carving and recovery to reconstruct deleted or fragmented data from disk images. Analyzed user activity, file timestamps, and system logs.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Autopsy</span>
+            <span class="tech-tag">FTK Imager</span>
+            <span class="tech-tag">E01/RAW</span>
+            <span class="tech-tag">Forensics</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="proj-num">02</div>
+          <h3>Network Sniffing & Spoofing Simulation</h3>
+          <p>Executed controlled sniffing and spoofing attacks in an academic lab to study network vulnerabilities and exposure risks. Documented attack behavior and mitigation strategies.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Wireshark</span>
+            <span class="tech-tag">Linux</span>
+            <span class="tech-tag">Networking</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="proj-num">03</div>
+          <h3>DNS Cache Poisoning Analysis</h3>
+          <p>Simulated DNS cache poisoning attacks and analyzed conditions enabling DNS manipulation. Produced a structured report covering risk factors, attacker requirements, and defensive strategies.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">DNS</span>
+            <span class="tech-tag">Lab Environment</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="proj-num">04</div>
+          <h3>Firewall & iptables Configuration Lab</h3>
+          <p>Designed and tested iptables rule sets for traffic filtering and system hardening. Documented rule behaviors during simulated attack scenarios including controlled scans and intrusion attempts.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">iptables</span>
+            <span class="tech-tag">Linux</span>
+            <span class="tech-tag">VMs</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="proj-num">05</div>
+          <h3>TCP Attack Surface Study</h3>
+          <p>Ran controlled TCP-based attack simulations to evaluate system resilience and the impact of misconfigurations. Collaborated on a written analysis covering risks and mitigation strategies.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">TCP/IP</span>
+            <span class="tech-tag">Linux</span>
+            <span class="tech-tag">Traffic Tools</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="proj-num">06</div>
+          <h3>Applied Cryptography Coursework</h3>
+          <p>Implemented and evaluated hashing, encryption, randomness, and key generation concepts. Analyzed security implications of weak algorithms and incorrect implementation practices.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Cryptography</span>
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">Hashing</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="proj-num">07</div>
+          <h3>Three-Tier Web Application</h3>
+          <p>Developed a modular web application using a three-tier architecture separating presentation, application logic, and data layers. Designed HTML interface, Python backend, and SQL database layer.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">SQL</span>
+            <span class="tech-tag">HTML</span>
+            <span class="tech-tag">3-Tier Arch</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education">
+      <div class="section-label">05 — Education</div>
+      <h2>Education</h2>
+      <br>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <div class="edu-degree">Master of Science<br>Cybersecurity</div>
+          <div class="edu-school">New York University</div>
+          <div class="edu-date">Expected December 2026</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-degree">Bachelor of Science<br>Computer Science — Cybersecurity</div>
+          <div class="edu-school">Liberty University · Virginia</div>
+          <div class="edu-date">Completed</div>
+        </div>
+      </div>
+
+      <div class="interests-row">
+        <span class="interest-pill">Security Analysis</span>
+        <span class="interest-pill">GRC</span>
+        <span class="interest-pill">SOC Operations</span>
+        <span class="interest-pill">IAM</span>
+        <span class="interest-pill">Digital Forensics</span>
+        <span class="interest-pill">Government Cybersecurity</span>
+        <span class="interest-pill">Domain Infrastructure</span>
+        <span class="interest-pill">DNS Security</span>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-label">06 — Contact</div>
+      <h2>Get In Touch</h2>
+      <br>
+      <div class="contact-row">
+        <a href="mailto:ga2698@nyu.edu" class="contact-link">
+          <div>
+            ga2698@nyu.edu
+            <span>Email</span>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/GreyAj" target="_blank" rel="noopener" class="contact-link">
+          <div>
+            linkedin.com/in/GreyAj
+            <span>LinkedIn</span>
+          </div>
+        </a>
+      </div>
+      <p style="margin-top:24px; font-size:12px; color:var(--text-muted);">Authorized to work in the United States.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>&copy; 2025 Grey Abou Jaoude — Cybersecurity Portfolio</p>
+    </div>
+  </footer>
+
 </body>
 </html>
