@@ -107,7 +107,7 @@
     }
 
     nav {
-      display: flex; flex-wrap: wrap; gap: 4px;
+      display: flex; flex-wrap: wrap; gap: 4px; align-items: center;
     }
 
     nav a {
@@ -122,6 +122,27 @@
       transition: all 0.2s;
     }
     nav a:hover { color: var(--accent); border-color: var(--accent); background: rgba(0,212,255,0.04); }
+
+    .btn-download {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--bg);
+      text-decoration: none;
+      padding: 6px 18px;
+      border-radius: 2px;
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      transition: all 0.2s;
+      margin-left: 8px;
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-mono);
+    }
+    .btn-download:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+    .btn-download::before { content: '↓'; font-size: 13px; }
 
     /* ── SECTIONS ── */
     section {
@@ -455,6 +476,7 @@
         <a href="#projects">Projects</a>
         <a href="#education">Education</a>
         <a href="#contact">Contact</a>
+        <a href="Grey_Abou_Jaoude_Resume.pdf" download class="btn-download">Resume</a>
       </nav>
     </div>
   </header>
@@ -675,9 +697,9 @@
       <h2>Get In Touch</h2>
       <br>
       <div class="contact-row">
-        <a href="mailto:ga2698@nyu.edu" class="contact-link">
+        <a href="/cdn-cgi/l/email-protection#7a1d1b484c43423a14030f541f1e0f" class="contact-link">
           <div>
-            ga2698@nyu.edu
+            <span class="__cf_email__" data-cfemail="d9beb8ebefe0e199b7a0acf7bcbdac">[email&#160;protected]</span>
             <span>Email</span>
           </div>
         </a>
@@ -694,10 +716,4 @@
   </main>
 
   <footer>
-    <div class="wrap">
-      <p>&copy; 2025 Grey Abou Jaoude — Cybersecurity Portfolio</p>
-    </div>
-  </footer>
-
-</body>
-</html>
+    <div
